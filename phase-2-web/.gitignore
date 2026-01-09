@@ -1,0 +1,3 @@
+.venv/\nnode_modules/\n__pycache__/\n.env\n.env.local\n.DS_Store
+.venv/
+venv/
