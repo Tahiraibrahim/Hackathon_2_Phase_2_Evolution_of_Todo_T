@@ -1,3 +1,22 @@
-.venv/\nnode_modules/\n__pycache__/\n.env\n.env.local\n.DS_Store
+# Frontend Dependencies
+node_modules/
+.next/
+out/
+build/
+
+# Backend Dependencies
 .venv/
 venv/
+__pycache__/
+*.py[cod]
+
+# Environment Variables (Secrets)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# System Files
+.DS_Store
+*.log
