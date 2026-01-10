@@ -3,10 +3,11 @@ import { createAuthClient } from "better-auth/react";
 /**
  * Better Auth Client (Frontend)
  * Use this on the frontend to interact with Better Auth API
- * Points to the local Next.js API route, NOT the Python backend
+ * Points to the deployed Vercel URL in production, or localhost in development
  */
 export const authClient = createAuthClient({
-  baseURL: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+  // 👇 Yahan humne variable name change kiya hai taake Vercel se match kare
+  baseURL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "http://localhost:3000",
   fetchOptions: {
     credentials: "include" // Include cookies for session management
   }
