@@ -1,7 +1,13 @@
 import axios from "axios";
 import { authClient } from "@/lib/auth"; 
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+// ✅ FIX: Agar URL ke aakhir mein '/' ho to usay hata do taake double slash na aye
+const getBaseUrl = () => {
+  const url = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+  return url.endsWith("/") ? url.slice(0, -1) : url;
+};
+
+const API_BASE_URL = getBaseUrl();
 
 /**
  * Axios instance configured for the Task Management API
@@ -11,6 +17,7 @@ export const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true, // ✅ CRITICAL: Cookies bhejne ke liye zaroori hai
 });
 
 export type Priority = "High" | "Medium" | "Low";
@@ -36,7 +43,6 @@ api.interceptors.request.use(
     const session = await authClient.getSession();
     
     // 2. Token extract karo
-    // FIX: Humne 'as any' use kia hai taake TypeScript error na de
     const token = (session?.data?.session as any)?.token || (session?.data as any)?.token;
 
     // 3. Agar token mil gaya to Header mai laga do
@@ -60,8 +66,7 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       if (typeof window !== "undefined") {
         console.error("⚠️ 401 Unauthorized: Token rejected by backend");
-        // Optional: Redirect to login only if really needed
-        // window.location.href = "/login"; 
+        // Optional: Redirect logic here if needed
       }
     }
     return Promise.reject(error);
